@@ -1,0 +1,4 @@
+com/sebkal/sevenwondersextensionapp/SevenWondersExtensionAppApplication.class
+com/sebkal/sevenwondersextensionapp/service/SevenWonderExtenstionService.class
+com/sebkal/sevenwondersextensionapp/config/SocketIOConfig.class
+com/sebkal/sevenwondersextensionapp/config/ServerCommandLineRunner.class
