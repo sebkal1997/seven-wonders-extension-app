@@ -1,7 +1,5 @@
 package com.sebkal.sevenwondersextensionapp.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,11 +9,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Game {
+public class CreateResourceDto {
 
-    private List<Member> members = new ArrayList<>();
+    private String memberName;
 
-    private int stage = 1;
+    private int resourceAmount;
 
-    private int round = 1;
+    private ResourceType resourceType;
 }

@@ -13,5 +13,9 @@ public class Resource {
 
     private ResourceType type;
 
-    private int amount;
+    private int amount = 0;
+
+    public void increaseAmount(int amount) {
+        this.amount += amount;
+    }
 }
