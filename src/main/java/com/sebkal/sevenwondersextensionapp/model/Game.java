@@ -1,11 +1,12 @@
 package com.sebkal.sevenwondersextensionapp.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
@@ -18,4 +19,11 @@ public class Game {
     private int stage = 1;
 
     private int round = 1;
+
+    public Member getMemberByName(String name) {
+        return this.members.stream()
+                .filter(member -> name.equals(member.getName()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Member with name %s does not exists.", name)));
+    }
 }

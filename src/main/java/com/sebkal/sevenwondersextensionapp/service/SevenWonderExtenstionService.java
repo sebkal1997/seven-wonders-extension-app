@@ -8,6 +8,7 @@ import com.corundumstudio.socketio.listener.DisconnectListener;
 import com.sebkal.sevenwondersextensionapp.model.CreateResourceDto;
 import com.sebkal.sevenwondersextensionapp.model.Game;
 import com.sebkal.sevenwondersextensionapp.model.Member;
+import com.sebkal.sevenwondersextensionapp.model.TransferResourcesDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -29,7 +30,7 @@ public class SevenWonderExtenstionService {
         this.socketServer.addEventListener("addMember", String.class, onAddMember());
         this.socketServer.addEventListener("removeMember", String.class, onRemoveMember());
         this.socketServer.addEventListener("addResource", CreateResourceDto.class, onAddResource());
-
+        this.socketServer.addEventListener("transferResources", TransferResourcesDto.class, onTransferResource());
     }
 
     private ConnectListener onConnected() {
@@ -72,6 +73,15 @@ public class SevenWonderExtenstionService {
                             .stream()
                             .filter(resource -> data.getResourceType().equals(resource.getType()))
                             .forEach(resource -> resource.increaseAmount(data.getResourceAmount())));
+            publishGameUpdate(client);
+        };
+    }
+
+    private DataListener<TransferResourcesDto> onTransferResource() {
+        return (client, data, ackSender) -> {
+            log.info("Transfer resources from {} to {}", data.getFromMemberName(), data.getToMemberName());
+            game.getMemberByName(data.getFromMemberName())
+                    .transferResources(game.getMemberByName(data.getToMemberName()), data.getResources());
             publishGameUpdate(client);
         };
     }
