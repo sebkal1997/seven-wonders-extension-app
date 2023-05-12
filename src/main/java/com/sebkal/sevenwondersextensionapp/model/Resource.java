@@ -15,11 +15,17 @@ public class Resource {
 
     private int amount = 0;
 
+    private int productionValue = 0;
+
     public void increaseAmount(int amount) {
         this.amount += amount;
     }
 
     public void decreaseAmount(int amount) {
         this.amount -= amount;
+    }
+
+    public void produceResource() {
+        this.amount += this.productionValue;
     }
 }

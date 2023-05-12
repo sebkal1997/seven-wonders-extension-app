@@ -1,5 +1,6 @@
 package com.sebkal.sevenwondersextensionapp.model;
 
+import com.sebkal.sevenwondersextensionapp.exception.GameFinishedException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,5 +26,29 @@ public class Game {
                 .filter(member -> name.equals(member.getName()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Member with name %s does not exists.", name)));
+    }
+
+    public void changeRound() {
+        setNewRoundAndStage();
+        generateResources();
+    }
+
+    private void generateResources() {
+        members.forEach(member -> {
+            member.getResources().forEach(Resource::produceResource);
+        });
+    }
+
+    private void setNewRoundAndStage() {
+        if (this.round == 8) {
+            if (this.stage == 3) {
+                throw new GameFinishedException("Game is finished.");
+            } else {
+                this.stage += 1;
+                this.round = 1;
+            }
+        } else {
+            this.round += 1;
+        }
     }
 }

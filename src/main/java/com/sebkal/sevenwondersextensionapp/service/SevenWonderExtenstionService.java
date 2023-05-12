@@ -5,6 +5,7 @@ import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DataListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
+import com.sebkal.sevenwondersextensionapp.exception.GameFinishedException;
 import com.sebkal.sevenwondersextensionapp.model.CreateResourceDto;
 import com.sebkal.sevenwondersextensionapp.model.Game;
 import com.sebkal.sevenwondersextensionapp.model.Member;
@@ -31,6 +32,7 @@ public class SevenWonderExtenstionService {
         this.socketServer.addEventListener("removeMember", String.class, onRemoveMember());
         this.socketServer.addEventListener("addResource", CreateResourceDto.class, onAddResource());
         this.socketServer.addEventListener("transferResources", TransferResourcesDto.class, onTransferResource());
+        this.socketServer.addEventListener("nextRound", Void.class, onNextRound());
     }
 
     private ConnectListener onConnected() {
@@ -86,10 +88,31 @@ public class SevenWonderExtenstionService {
         };
     }
 
+    private DataListener<Void> onNextRound() {
+        return (client, data, ackSender) -> {
+            log.info("Change game round to " + game.getRound() + 1);
+            try {
+                game.changeRound();
+                publishGameUpdate(client);
+            } catch (GameFinishedException ex) {
+                publishGameOver(client);
+            }
+        };
+    }
+
     private void publishGameUpdate(SocketIOClient client) {
         final String roomName = client.getAllRooms().stream().findFirst().orElse(null);
         if (roomName != null) {
             socketServer.getRoomOperations(roomName).sendEvent("gameUpdate", game);
+        } else {
+            log.error("Cannot find room name for client {}", client.getSessionId());
+        }
+    }
+
+    private void publishGameOver(SocketIOClient client) {
+        final String roomName = client.getAllRooms().stream().findFirst().orElse(null);
+        if (roomName != null) {
+            socketServer.getRoomOperations(roomName).sendEvent("gameOver", "Game Over!");
         } else {
             log.error("Cannot find room name for client {}", client.getSessionId());
         }
