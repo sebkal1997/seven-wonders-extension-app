@@ -33,6 +33,16 @@ public class Game {
         generateResources();
     }
 
+    public void increaseProductionForMember(IncreaseProductionDto data) {
+        this.getMembers()
+                .stream()
+                .filter(member -> data.getMemberName().equals(member.getName()))
+                .forEach(member -> member.getResources()
+                        .stream()
+                        .filter(resource -> data.getResourceType().equals(resource.getType()))
+                        .forEach(resource -> resource.increaseProduction(data.getProductionValue())));
+    }
+
     private void generateResources() {
         members.forEach(member -> {
             member.getResources().forEach(Resource::produceResource);

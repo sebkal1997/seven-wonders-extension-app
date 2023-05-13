@@ -25,6 +25,10 @@ public class Resource {
         this.amount -= amount;
     }
 
+    public void increaseProduction(int productionValue) {
+        this.productionValue += productionValue;
+    }
+
     public void produceResource() {
         this.amount += this.productionValue;
     }

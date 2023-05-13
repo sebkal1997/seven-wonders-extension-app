@@ -6,10 +6,7 @@ import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DataListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
 import com.sebkal.sevenwondersextensionapp.exception.GameFinishedException;
-import com.sebkal.sevenwondersextensionapp.model.CreateResourceDto;
-import com.sebkal.sevenwondersextensionapp.model.Game;
-import com.sebkal.sevenwondersextensionapp.model.Member;
-import com.sebkal.sevenwondersextensionapp.model.TransferResourcesDto;
+import com.sebkal.sevenwondersextensionapp.model.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -33,6 +30,7 @@ public class SevenWonderExtenstionService {
         this.socketServer.addEventListener("addResource", CreateResourceDto.class, onAddResource());
         this.socketServer.addEventListener("transferResources", TransferResourcesDto.class, onTransferResource());
         this.socketServer.addEventListener("nextRound", Void.class, onNextRound());
+        this.socketServer.addEventListener("increaseProduction", IncreaseProductionDto.class, onIncreaseProduction());
     }
 
     private ConnectListener onConnected() {
@@ -97,6 +95,15 @@ public class SevenWonderExtenstionService {
             } catch (GameFinishedException ex) {
                 publishGameOver(client);
             }
+        };
+    }
+
+    private DataListener<IncreaseProductionDto> onIncreaseProduction() {
+        return (client, data, ackSender) -> {
+            log.info("Increase production of {} by {} for {}", data.getResourceType().toString(),
+                    data.getProductionValue(), data.getMemberName());
+            game.increaseProductionForMember(data);
+            publishGameUpdate(client);
         };
     }
 
