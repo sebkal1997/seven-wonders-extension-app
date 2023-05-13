@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Chat | Spring Boot + WebSocket</title>
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+</head>
+<body style="background-position: center; background-repeat: no-repeat; background-size: cover; background-image: url(images/maxresdefault.jpg)">
+<noscript>
+    <h2>Oops! It seems that this browser does not support JavaScript </h2>
+</noscript>
+
+<div id="room-page">
+    <div class="room-page-container">
+        <h1 class="title">Enter name of the room:</h1>
+        <form id="roomForm" name="roomForm">
+            <div class="form-group">
+                <input type="text" id="roomName" placeholder="Room name"
+                       autocomplete="off" class="form-control" />
+            </div>
+            <div class="form-group">
+                <button type="submit" class="accent room-submit">Create a room</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div id="member-page" class="hidden">
+    <div class="member-page-container">
+        <h1 class="title">Add member to the game:</h1>
+        <form id="memberForm" name="memberForm">
+            <div class="form-group">
+                <input type="text" id="memberName" placeholder="Member name"
+                       autocomplete="off" class="form-control" />
+            </div>
+            <div class="form-group">
+                <button type="submit" class="accent member-submit">Add member</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="js/main.js"></script>
+<script src="js/socket.io-2.2.0.js"></script>
+</body>
+</html>

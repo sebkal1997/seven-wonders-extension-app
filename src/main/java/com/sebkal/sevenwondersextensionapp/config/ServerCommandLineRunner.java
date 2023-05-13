@@ -2,6 +2,7 @@ package com.sebkal.sevenwondersextensionapp.config;
 
 
 import com.corundumstudio.socketio.SocketIOServer;
+import jakarta.annotation.PreDestroy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -18,6 +19,11 @@ public class ServerCommandLineRunner implements CommandLineRunner {
 
     public ServerCommandLineRunner(final SocketIOServer server) {
         this.server = server;
+    }
+
+    @PreDestroy
+    public void stopServer() {
+        this.server.stop();
     }
 }
 
