@@ -4,6 +4,8 @@ var roomPage = document.querySelector('#room-page');
 var roomForm = document.querySelector('#roomForm');
 var memberPage = document.querySelector('#member-page');
 var memberForm = document.querySelector('#memberForm');
+var memberList = document.querySelector('#memberList');
+var addMemberButton = document.querySelector('#addMemberButton');
 
 var roomName = null;
 var socket = null;
@@ -27,8 +29,9 @@ function connect(event) {
         socket.on('connect', function () {
             console.log("Connected to WS.")
         });
-        socket.on('gameUpdate', function (data) {
-            console.log('Received message', data);
+        socket.on('gameUpdate', (data) => {
+            console.log(data);
+            onGameUpdate(data);
         });
         socket.on('disconnect', function () {
             console.log("Disconnected with WS.")
@@ -41,10 +44,21 @@ function connect(event) {
 }
 
 function addMember(event) {
-    memberName = document.querySelector('#memberName').value.trim();
+    var memberName = document.querySelector('#memberName').value.trim();
     console.log("Add member with name: " + memberName);
+    const memberBox = `
+        <div class="${memberName}-list">
+          <h5>${memberName}</h5>
+        </div>
+    `;
+    console.log(memberList)
+    memberList.innerHTML += memberBox;
 
     socket.emit("addMember", memberName);
+}
+
+function startGame(event) {
+    memberPage.classList.add('hidden');
 }
 
 function onConnected() {
@@ -60,5 +74,6 @@ function onGameUpdate() {
     console.log("Game updated.")
 }
 
-roomForm.addEventListener('submit', connect, true)
-memberForm.addEventListener('submit', addMember, true)
+roomForm.addEventListener('submit', connect, true);
+addMemberButton.addEventListener('click', addMember, true);
+memberForm.addEventListener('submit', startGame, true);

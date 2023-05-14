@@ -4,6 +4,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>Chat | Spring Boot + WebSocket</title>
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="css/main.css" />
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
 </head>
@@ -15,7 +16,7 @@
 <div id="room-page">
     <div class="room-page-container">
         <h1 class="title">Enter name of the room:</h1>
-        <form id="roomForm" name="roomForm">
+        <form id="roomForm" name="roomForm" accept-charset=utf-8>
             <div class="form-group">
                 <input type="text" id="roomName" placeholder="Room name"
                        autocomplete="off" class="form-control" />
@@ -31,19 +32,27 @@
 <div id="member-page" class="hidden">
     <div class="member-page-container">
         <h1 class="title">Add member to the game:</h1>
-        <form id="memberForm" name="memberForm">
+        <form id="memberForm" name="memberForm" accept-charset=utf-8>
             <div class="form-group">
                 <input type="text" id="memberName" placeholder="Member name"
                        autocomplete="off" class="form-control" />
             </div>
             <div class="form-group">
-                <button type="submit" class="accent member-submit">Add member</button>
+                <button type="button" id="addMemberButton" class="accent add-member-submit">Add member</button>
+            </div>
+            <div id="memberList" class="member-list-container">
+                <h2>List of users:</h2>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="accent member-submit">Done</button>
             </div>
         </form>
     </div>
 </div>
 
 <script src="js/main.js"></script>
-<script src="js/socket.io-2.2.0.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 </body>
 </html>
