@@ -1,19 +1,18 @@
+import { Game } from "./model/game.js";
+
 'use strict';
 
-var roomPage = document.querySelector('#room-page');
-var roomForm = document.querySelector('#roomForm');
-var memberPage = document.querySelector('#member-page');
-var memberForm = document.querySelector('#memberForm');
-var memberList = document.querySelector('#memberList');
-var addMemberButton = document.querySelector('#addMemberButton');
+const roomPage = document.querySelector('#room-page');
+const roomForm = document.querySelector('#roomForm');
+const memberPage = document.querySelector('#member-page');
+const memberForm = document.querySelector('#memberForm');
+const memberList = document.querySelector('#memberList');
+const addMemberButton = document.querySelector('#addMemberButton');
+const gamePage = document.querySelector('#game-page');
+const gameForm = document.querySelector('#gameForm');
 
-var roomName = null;
-var socket = null;
-
-var colors = [
-    '#2196F3', '#32c787', '#00BCD4', '#ff5652',
-    '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
-];
+let roomName = null;
+let socket = null;
 
 function connect(event) {
     roomName = document.querySelector('#roomName').value.trim();
@@ -44,7 +43,7 @@ function connect(event) {
 }
 
 function addMember(event) {
-    var memberName = document.querySelector('#memberName').value.trim();
+    let memberName = document.querySelector('#memberName').value.trim();
     console.log("Add member with name: " + memberName);
     const memberBox = `
         <div class="${memberName}-list">
@@ -59,6 +58,12 @@ function addMember(event) {
 
 function startGame(event) {
     memberPage.classList.add('hidden');
+    gamePage.classList.remove('hidden');
+    event.preventDefault();
+}
+
+function finishGame(event) {
+    socket.disconnect();
 }
 
 function onConnected() {
@@ -70,10 +75,14 @@ function onDisconnect() {
     console.log("Disconnect from server.")
 }
 
-function onGameUpdate() {
+function onGameUpdate(data) {
+    let game = new Game(data); //fix problem with mapping json object to model
+    let roundAndStage = document.querySelector("#roundAndStage");
+    roundAndStage.innerHTML = "Round: " + data.round + " Stage: " + data.stage;
     console.log("Game updated.")
 }
 
 roomForm.addEventListener('submit', connect, true);
 addMemberButton.addEventListener('click', addMember, true);
 memberForm.addEventListener('submit', startGame, true);
+gameForm.addEventListener('submit', finishGame, true);

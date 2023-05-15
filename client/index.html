@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/main.css" />
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body style="background-position: center; background-repeat: no-repeat; background-size: cover; background-image: url(images/maxresdefault.jpg)">
 <noscript>
@@ -27,7 +28,6 @@
         </form>
     </div>
 </div>
-
 
 <div id="member-page" class="hidden">
     <div class="member-page-container">
@@ -50,7 +50,33 @@
     </div>
 </div>
 
-<script src="js/main.js"></script>
+<div id="game-page" class="hidden">
+    <div class="game-page-container">
+        <h1 class="title">Game</h1>
+        <h2 id="roundAndStage"></h2>
+        <form id="gameForm" name="gameForm" accept-charset=utf-8>
+            <div class="form-group row">                
+                <label class="col-sm-2 col-form-label">WOOD</label>
+                <label for="woodAmount" class="col-sm-2 col-form-label">Amount:</label>
+                <div class="col-sm-2">
+                    <input type="number" id="woodAmount" class="form-control" />
+                </div>
+                <label for="woodProduction" class="col-sm-2 col-form-label">ProductionValue</label>
+                <div class="col-sm-2">
+                <input type="number" id="woodProduction" class="form-control" />
+                </div>
+                <div class="col-sm-2">
+                    <button type="button" id="transferWoodButton" class="accent transfer-wood-submit">Transfer</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="accent game-submit">Game Over</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="js/main.js" type="module"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
