@@ -50,23 +50,37 @@
     </div>
 </div>
 
-<div id="game-page" class="hidden">
+<div id="game-page"class="hidden">
     <div class="game-page-container">
         <h1 class="title">Game</h1>
         <h2 id="roundAndStage"></h2>
         <form id="gameForm" name="gameForm" accept-charset=utf-8>
-            <div class="form-group row">                
-                <label class="col-sm-2 col-form-label">WOOD</label>
-                <label for="woodAmount" class="col-sm-2 col-form-label">Amount:</label>
-                <div class="col-sm-2">
-                    <input type="number" id="woodAmount" class="form-control" />
-                </div>
-                <label for="woodProduction" class="col-sm-2 col-form-label">ProductionValue</label>
-                <div class="col-sm-2">
-                <input type="number" id="woodProduction" class="form-control" />
-                </div>
-                <div class="col-sm-2">
-                    <button type="button" id="transferWoodButton" class="accent transfer-wood-submit">Transfer</button>
+            <div class="form-group row" style="display:flex; justify-content:space-between;">
+                <h3 id="currentMemberName">Marian</h3>
+                <button type="button" id="nextMemberButton" class="accent next-member-submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-square" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="form-resource">
+                <div class="form-group row">
+                    <label id="resourceType" class="col-sm-2 col-form-label">TYPE</label>
+                    <label for="resourceAmount" class="col-sm-2 col-form-label">Amount:</label>
+                    <div class="col-sm-2">
+                        <input type="number" id="resourceAmount" class="form-control" value="0"/>
+                    </div>
+                    <label for="resourceProduction" class="col-sm-2 col-form-label">Production:</label>
+                    <div class="col-sm-2">
+                    <input type="number" id="resourceProduction" class="form-control" value="0"/>
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="button" id="transferWoodButton" class="accent transfer-wood-submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5zm14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5z"/>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="form-group">
