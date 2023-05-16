@@ -76,9 +76,9 @@ function onDisconnect() {
 }
 
 function onGameUpdate(data) {
-    let game = new Game(data); //fix problem with mapping json object to model
+    let game = new Game(data.members, data.round, data.stage);
     let roundAndStage = document.querySelector("#roundAndStage");
-    roundAndStage.innerHTML = "Round: " + data.round + " Stage: " + data.stage;
+    roundAndStage.innerHTML = "Round: " + game.round + " Stage: " + game.stage;
     console.log("Game updated.")
 }
 
