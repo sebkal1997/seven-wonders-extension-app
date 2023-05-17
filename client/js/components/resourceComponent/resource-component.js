@@ -1,4 +1,4 @@
-// import htmlTemplate from "./resource-component.html";
+//import { htmlTemplate } from "./resource-component.html";
 // import stylesheet from "!!css-loader!./resource-component.css";
 
 const resourceTypeField = document.querySelector('#resourceType');
@@ -17,17 +17,18 @@ export class ResourceComponent extends HTMLElement {
         resourceAmountField.value = resourceAmount;
         resourceProductionField.value = resourceProduction;
 
-        // const element = document.createElement("template");
-        // element.innerHTML = htmlTemplate;
+        const template =  document.getElementById("resourceComponentTemple");
+        console.log(template);
+        const templateContent = template.content;
 
 		// this.shadowRoot.append(styleElement);
 		// this.shadowRoot.append(element.content.cloneNode(true));
 
-        let template = document.querySelector("#resourceComponentTemple");
-        console.log(template);
-        let templateContent = template.content;
+        // let template = document.querySelector("#resourceComponentTemple");
+        // console.log(template);
+        // let templateContent = template.content;
 
 		const shadowRoot = this.attachShadow({ mode: "open" });
-        shadowRoot.appendChild(templateContent.cloneNode(true));
+        shadowRoot.append(templateContent.cloneNode(true));
     }
 }
