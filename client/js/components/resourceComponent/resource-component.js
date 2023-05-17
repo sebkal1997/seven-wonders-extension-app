@@ -9,23 +9,25 @@ export class ResourceComponent extends HTMLElement {
     constructor() {
         super();
 
-		this.attachShadow({mode: "open"});
-
         let resourceType = this.attributes.resourceType.value
         let resourceAmount = this.attributes.resourceType.value
         let resourceProduction = this.attributes.resourceType.value
 
+        resourceTypeField.innerHTML = resourceType;
+        resourceAmountField.value = resourceAmount;
+        resourceProductionField.value = resourceProduction;
+
         // const element = document.createElement("template");
         // element.innerHTML = htmlTemplate;
-
-        // const styleElement = document.createElement("style");
-        // styleElement.innerHTML = stylesheet.toString();
 
 		// this.shadowRoot.append(styleElement);
 		// this.shadowRoot.append(element.content.cloneNode(true));
 
-        resourceTypeField.innerHTML = resourceType;
-        resourceAmountField.value = resourceAmount;
-        resourceProductionField.value = resourceProduction;
+        let template = document.querySelector("#resourceComponentTemple");
+        console.log(template);
+        let templateContent = template.content;
+
+		const shadowRoot = this.attachShadow({ mode: "open" });
+        shadowRoot.appendChild(templateContent.cloneNode(true));
     }
 }
