@@ -88,7 +88,7 @@ public class SevenWonderExtenstionService {
 
     private DataListener<Void> onNextRound() {
         return (client, data, ackSender) -> {
-            log.info("Change game round to " + game.getRound() + 1);
+            log.info("Change game round to " + (game.getRound() + 1));
             try {
                 game.changeRound();
                 publishGameUpdate(client);
