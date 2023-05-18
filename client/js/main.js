@@ -1,4 +1,5 @@
 import { Game } from "./model/game.js";
+import { CreateResource } from "./model/create-resource.js";
 
 'use strict';
 
@@ -13,6 +14,7 @@ const gameForm = document.querySelector('#gameForm');
 const resourceForm = document.querySelector('.form-resource');
 const currentMemberName = document.querySelector('#currentMemberName');
 const nextMemberButton = document.querySelector('#nextMemberButton');
+const resourceProductionInput = document.querySelector('.resource-production');
 
 let roomName = null;
 let socket = null;
@@ -119,6 +121,10 @@ function reloadGame() {
     materialProduction.value = game.members[currentMemberId].resources[4].productionValue;
 }
 
+function increaseProduction(event) {
+
+}
+
 function onConnected() {
     console.log("Connected to server: " + socket.id);
 }
@@ -142,3 +148,6 @@ addMemberButton.addEventListener('click', addMember, true);
 memberForm.addEventListener('submit', startGame, true);
 gameForm.addEventListener('submit', finishGame, true);
 nextMemberButton.addEventListener('click', nextMember, true);
+resourceProductionInput.addEventListener('onkeyup', increaseProduction, true);
+resourceProductionInput.addEventListener('onkeydown', () => console.log("handle key down"), true);
+//addEventListener("input", updateValue)
