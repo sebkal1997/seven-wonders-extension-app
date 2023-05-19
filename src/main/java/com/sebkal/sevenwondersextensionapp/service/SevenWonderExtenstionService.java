@@ -11,10 +11,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Component
 public class SevenWonderExtenstionService {
 
     private static final Logger log = LogManager.getLogger(SevenWonderExtenstionService.class);
+
+    private static final Map<String, String> clientRoom = new HashMap<>();
 
     private final SocketIOServer socketServer;
 
@@ -36,6 +41,7 @@ public class SevenWonderExtenstionService {
     private ConnectListener onConnected() {
         return (client) -> {
             String room = client.getHandshakeData().getSingleUrlParam("room");
+            clientRoom.put(client.getSessionId().toString(), room);
             client.joinRoom(room);
             log.info("Client ID[{}]  Connected to socket", client.getSessionId().toString());
         };
@@ -43,6 +49,7 @@ public class SevenWonderExtenstionService {
 
     private DisconnectListener onDisconnected() {
         return (client) -> {
+            final String roomName = clientRoom.remove(client.getSessionId().toString());
             log.info("Client ID[{}] - Disconnected from socket", client.getSessionId().toString());
         };
     }
@@ -108,7 +115,7 @@ public class SevenWonderExtenstionService {
     }
 
     private void publishGameUpdate(SocketIOClient client) {
-        final String roomName = client.getAllRooms().stream().findFirst().orElse(null);
+        final String roomName = clientRoom.get(client.getSessionId().toString());
         if (roomName != null) {
             socketServer.getRoomOperations(roomName).sendEvent("gameUpdate", game);
         } else {
@@ -117,7 +124,7 @@ public class SevenWonderExtenstionService {
     }
 
     private void publishGameOver(SocketIOClient client) {
-        final String roomName = client.getAllRooms().stream().findFirst().orElse(null);
+        final String roomName = clientRoom.get(client.getSessionId().toString());
         if (roomName != null) {
             socketServer.getRoomOperations(roomName).sendEvent("gameOver", "Game Over!");
         } else {

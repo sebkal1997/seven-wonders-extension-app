@@ -51,3 +51,7 @@ atlassian-ide-plugin.xml
 .vscode/
 
 cached-antora-playbook.yml
+
+# FE
+client/dist
+client/node_modules

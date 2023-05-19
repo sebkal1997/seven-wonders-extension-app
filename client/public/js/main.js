@@ -1,6 +1,7 @@
 import { Game } from "./model/game.js";
 import { CreateResource } from "./model/create-resource.js";
 import { IncreaseProduction } from "./model/increase-production.js";
+import css from "../css/main.css"
 
 'use strict';
 
@@ -163,10 +164,10 @@ function increaseWoodProduction(event) {
 
 function increaseStoneProduction(event) {
     const targetValue = event.target.value;
-    if (targetValue > oldWoodProduction) {
-        let increaseProduction = new IncreaseProduction(game.members[currentMemberId-1].name, targetValue - oldWoodProduction, "STONE");
+    if (targetValue > oldStoneProduction) {
+        let increaseProduction = new IncreaseProduction(game.members[currentMemberId-1].name, targetValue - oldStoneProduction, "STONE");
         socket.emit("increaseProduction", increaseProduction);
-        oldWoodProduction = targetValue;
+        oldStoneProduction = targetValue;
     } else {
         console.log("Value need to be incremented.");
     }
@@ -174,10 +175,10 @@ function increaseStoneProduction(event) {
 
 function increaseIronProduction(event) {
     const targetValue = event.target.value;
-    if (targetValue > oldWoodProduction) {
-        let increaseProduction = new IncreaseProduction(game.members[currentMemberId-1].name, targetValue - oldWoodProduction, "IRON");
+    if (targetValue > oldIronProduction) {
+        let increaseProduction = new IncreaseProduction(game.members[currentMemberId-1].name, targetValue - oldIronProduction, "IRON");
         socket.emit("increaseProduction", increaseProduction);
-        oldWoodProduction = targetValue;
+        oldIronProduction = targetValue;
     } else {
         console.log("Value need to be incremented.");
     }
@@ -185,10 +186,10 @@ function increaseIronProduction(event) {
 
 function increaseGlassProduction(event) {
     const targetValue = event.target.value;
-    if (targetValue > oldWoodProduction) {
-        let increaseProduction = new IncreaseProduction(game.members[currentMemberId-1].name, targetValue - oldWoodProduction, "GLASS");
+    if (targetValue > oldGlassProduction) {
+        let increaseProduction = new IncreaseProduction(game.members[currentMemberId-1].name, targetValue - oldGlassProduction, "GLASS");
         socket.emit("increaseProduction", increaseProduction);
-        oldWoodProduction = targetValue;
+        oldGlassProduction = targetValue;
     } else {
         console.log("Value need to be incremented.");
     }
@@ -196,10 +197,10 @@ function increaseGlassProduction(event) {
 
 function increaseMaterialProduction(event) {
     const targetValue = event.target.value;
-    if (targetValue > oldWoodProduction) {
-        let increaseProduction = new IncreaseProduction(game.members[currentMemberId-1].name, targetValue - oldWoodProduction, "MATERIAL");
+    if (targetValue > oldMaterialProduction) {
+        let increaseProduction = new IncreaseProduction(game.members[currentMemberId-1].name, targetValue - oldMaterialProduction, "MATERIAL");
         socket.emit("increaseProduction", increaseProduction);
-        oldWoodProduction = targetValue;
+        oldMaterialProduction = targetValue;
     } else {
         console.log("Value need to be incremented.");
     }
