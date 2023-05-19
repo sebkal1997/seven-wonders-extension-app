@@ -1,7 +1,9 @@
 import { Game } from "./model/game.js";
-import { CreateResource } from "./model/create-resource.js";
+import { TransferResources } from "./model/transfer-resources.js";
 import { IncreaseProduction } from "./model/increase-production.js";
 import css from "../css/main.css"
+import { Resource } from "./model/resource.js";
+import 'bootstrap';
 
 'use strict';
 
@@ -13,7 +15,6 @@ const memberList = document.querySelector('#memberList');
 const addMemberButton = document.querySelector('#addMemberButton');
 const gamePage = document.querySelector('#game-page');
 const gameForm = document.querySelector('#gameForm');
-const resourceForm = document.querySelector('.form-resource');
 const currentMemberName = document.querySelector('#currentMemberName');
 const nextMemberButton = document.querySelector('#nextMemberButton');
 const woodType = document.querySelector("#woodType");
@@ -31,6 +32,17 @@ const glassProduction = document.querySelector("#glassProduction");
 const materialType = document.querySelector("#materialType");
 const materialAmount = document.querySelector("#materialAmount");
 const materialProduction = document.querySelector("#materialProduction");
+const transferResourcesDialog = document.querySelector("#transferResourcesDialog");
+const transferResourcesDialogContent = document.querySelector("#transferResourcesDialogContent");
+const transferWoodButton = document.querySelector("#transferWoodButton");
+const transferStoneButton = document.querySelector("#transferStoneButton");
+const transferIronButton = document.querySelector("#transferIronButton");
+const transferGlassButton = document.querySelector("#transferGlassButton");
+const transferMaterialButton = document.querySelector("#transferMaterialButton");
+const title = document.querySelector("#title");
+const fromMember = document.querySelector("#fromMember");
+const toMember = document.querySelector("#toMember");
+const amount = document.querySelector("#amount");
 
 let roomName = null;
 let socket = null;
@@ -42,6 +54,7 @@ let oldStoneProduction = 0;
 let oldIronProduction = 0;
 let oldGlassProduction = 0;
 let oldMaterialProduction = 0;
+let resourceTypeToTransfer = null;
 
 function connect(event) {
     roomName = document.querySelector('#roomName').value.trim();
@@ -206,6 +219,30 @@ function increaseMaterialProduction(event) {
     }
 }
 
+function createDialog(resourceType) {
+    let fromName = game.members[currentMemberId - 1].name;
+    resourceTypeToTransfer = resourceType;
+    title.innerHTML = "Transfer " + resourceType;
+    fromMember.value = fromName;
+    game.members.map( (member) => {
+        if (member.name != fromName) {
+            let opt = document.createElement("option");
+            opt.value = member.name;
+            opt.innerHTML = member.name;
+            toMember.append(opt);
+        }
+    });
+}
+
+function transfer(event) {
+    const fromName = game.members[currentMemberId - 1].name;
+    const toName = toMember.value;
+    const resourceToTransfer = new Resource(resourceTypeToTransfer, amount.value, null)
+    let transferResource = new TransferResources(fromName, toName, new Array(resourceToTransfer))
+    socket.emit("transferResources", transferResource);
+    event.preventDefault;
+}
+
 function onConnected() {
     console.log("Connected to server: " + socket.id);
 }
@@ -234,3 +271,24 @@ stoneProduction.addEventListener('change', increaseStoneProduction, true);
 ironProduction.addEventListener('change', increaseIronProduction, true);
 glassProduction.addEventListener('change', increaseGlassProduction, true);
 materialProduction.addEventListener('change', increaseMaterialProduction, true);
+transferWoodButton.addEventListener('click', () => {
+    createDialog("WOOD");
+    transferResourcesDialog.showModal()
+}, true);
+transferStoneButton.addEventListener('click', () => {
+    createDialog("STONE");
+    transferResourcesDialog.showModal()
+}, true);
+transferIronButton.addEventListener('click', () => {
+    createDialog("IRON");
+    transferResourcesDialog.showModal()
+}, true);
+transferGlassButton.addEventListener('click', () => {
+    createDialog("GLASS");
+    transferResourcesDialog.showModal()
+}, true);
+transferMaterialButton.addEventListener('click', () => {
+    createDialog("MATERIAL");
+    transferResourcesDialog.showModal()
+}, true);
+dialogForm.addEventListener('submit', transfer, true);
