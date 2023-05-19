@@ -112,22 +112,37 @@ function reloadGame() {
     const memberIndex = currentMemberId - 1;
     currentMemberName.innerHTML = game.members[memberIndex].name;
 
-    woodType.innerHTML = game.members[memberIndex].resources[0].type;
-    woodAmount.value = game.members[memberIndex].resources[0].amount;
-    woodProduction.value = game.members[memberIndex].resources[0].productionValue;
-    stoneType.innerHTML = game.members[memberIndex].resources[1].type;
-    stoneAmount.value = game.members[memberIndex].resources[1].amount;
-    stoneProduction.value = game.members[memberIndex].resources[1].productionValue;
-    ironType.innerHTML = game.members[memberIndex].resources[2].type;
-    ironAmount.value = game.members[memberIndex].resources[2].amount;
-    ironProduction.value = game.members[memberIndex].resources[2].productionValue;
-    glassType.innerHTML = game.members[memberIndex].resources[3].type;
-    glassAmount.value = game.members[memberIndex].resources[3].amount;
-    glassProduction.value = game.members[memberIndex].resources[3].productionValue;
-    materialType.innerHTML = game.members[memberIndex].resources[4].type;
-    materialAmount.value = game.members[memberIndex].resources[4].amount;
-    materialProduction.value = game.members[memberIndex].resources[4].productionValue;
-
+    for (let resource of game.members[memberIndex].resources) {
+        switch (resource.type) {
+          case 'WOOD':
+            woodType.innerHTML = resource.type;
+            woodAmount.value = resource.amount;
+            woodProduction.value = resource.productionValue;
+            break;
+          case 'STONE':
+            stoneType.innerHTML = resource.type;
+            stoneAmount.value = resource.amount;
+            stoneProduction.value = resource.productionValue;
+            break;
+          case 'IRON':
+            ironType.innerHTML = resource.type;
+            ironAmount.value = resource.amount;
+            ironProduction.value = resource.productionValue;
+            break;
+          case 'GLASS':
+            glassType.innerHTML = resource.type;
+            glassAmount.value = resource.amount;
+            glassProduction.value = resource.productionValue;
+            break;
+          case 'MATERIAL':
+            materialType.innerHTML = resource.type;
+            materialAmount.value = resource.amount;
+            materialProduction.value = resource.productionValue;
+            break;
+          default:
+            console.log("Resource " + resource.type + " is not handled yet.");
+        }
+    }
     oldWoodProduction = woodProduction.value;
     oldStoneProduction = stoneProduction.value;
     oldIronProduction = ironProduction.value;
