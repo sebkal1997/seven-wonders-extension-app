@@ -3,7 +3,6 @@ import { TransferResources } from "./model/transfer-resources.js";
 import { IncreaseProduction } from "./model/increase-production.js";
 import css from "../css/main.css"
 import { Resource } from "./model/resource.js";
-import 'bootstrap';
 
 'use strict';
 

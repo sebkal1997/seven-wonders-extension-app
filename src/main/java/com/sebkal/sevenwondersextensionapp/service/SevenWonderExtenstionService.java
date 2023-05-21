@@ -50,6 +50,7 @@ public class SevenWonderExtenstionService {
     private DisconnectListener onDisconnected() {
         return (client) -> {
             final String roomName = clientRoom.remove(client.getSessionId().toString());
+            client.leaveRoom(roomName);
             log.info("Client ID[{}] - Disconnected from socket", client.getSessionId().toString());
         };
     }
