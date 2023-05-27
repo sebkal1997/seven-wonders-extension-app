@@ -1,34 +1,30 @@
-//import { htmlTemplate } from "./resource-component.html";
-// import stylesheet from "!!css-loader!./resource-component.css";
-
-const resourceTypeField = document.querySelector('#resourceType');
-const resourceAmountField = document.querySelector('#resourceAmount');
-const resourceProductionField = document.querySelector('#resourceProduction');
+import htmlTemplate from "./resource-component.html";
+import stylesheet from "!!css-loader!./resource-component.css";
 
 export class ResourceComponent extends HTMLElement {
     constructor() {
         super();
+		this.attachShadow({mode: "open"});
 
+		const element = document.createElement("template");
+		element.innerHTML = htmlTemplate;
+
+        const styleElement = document.createElement("style");
+		styleElement.innerHTML = stylesheet.toString();
+
+        console.log(this.attributes)
         let resourceType = this.attributes.resourceType.value
-        let resourceAmount = this.attributes.resourceType.value
-        let resourceProduction = this.attributes.resourceType.value
+        let resourceAmount = this.attributes.resourceAmount.value
+        let resourceProduction = this.attributes.resourceProduction.value
 
+		this.shadowRoot.append(styleElement);
+		this.shadowRoot.append(element.content.cloneNode(true));
+
+        const resourceTypeField = this.shadowRoot.querySelector('#resourceType');
+        const resourceAmountField = this.shadowRoot.querySelector('#resourceAmount');
+        const resourceProductionField = this.shadowRoot.querySelector('#resourceProduction');
         resourceTypeField.innerHTML = resourceType;
         resourceAmountField.value = resourceAmount;
         resourceProductionField.value = resourceProduction;
-
-        const template =  document.getElementById("resourceComponentTemple");
-        console.log(template);
-        const templateContent = template.content;
-
-		// this.shadowRoot.append(styleElement);
-		// this.shadowRoot.append(element.content.cloneNode(true));
-
-        // let template = document.querySelector("#resourceComponentTemple");
-        // console.log(template);
-        // let templateContent = template.content;
-
-		const shadowRoot = this.attachShadow({ mode: "open" });
-        shadowRoot.append(templateContent.cloneNode(true));
     }
 }

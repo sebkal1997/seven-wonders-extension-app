@@ -3,6 +3,7 @@ import { TransferResources } from "./model/transfer-resources.js";
 import { IncreaseProduction } from "./model/increase-production.js";
 import css from "../css/main.css"
 import { Resource } from "./model/resource.js";
+import { ResourceComponent } from "./components/resourceComponent/resource-component.js";
 
 'use strict';
 
@@ -42,6 +43,7 @@ const title = document.querySelector("#title");
 const fromMember = document.querySelector("#fromMember");
 const toMember = document.querySelector("#toMember");
 const amount = document.querySelector("#amount");
+const resourceForm = document.querySelector(".form-resource");
 
 let roomName = null;
 let socket = null;
@@ -74,6 +76,7 @@ function connect(event) {
             onGameUpdate(data);
         });
         socket.on('gameOver', () => {
+            game = null;
             finishGame();
         });
         socket.on('disconnect', function () {
@@ -161,6 +164,11 @@ function reloadGame() {
     oldIronProduction = ironProduction.value;
     oldGlassProduction = glassProduction.value;
     oldMaterialProduction = materialProduction.value;
+    const resourceComponent = `
+    <resource-component resourceType="GOLD" resourceAmount="1" resourceProduction="1">
+    </resource-component>
+`;
+    resourceForm.innerHTML += resourceComponent;
 }
 
 function increaseWoodProduction(event) {
@@ -260,6 +268,7 @@ function onGameUpdate(data) {
     console.log("Game updated.")
 }
 
+customElements.define("resource-component", ResourceComponent);
 roomForm.addEventListener('submit', connect, true);
 addMemberButton.addEventListener('click', addMember, true);
 memberForm.addEventListener('submit', startGame, true);
