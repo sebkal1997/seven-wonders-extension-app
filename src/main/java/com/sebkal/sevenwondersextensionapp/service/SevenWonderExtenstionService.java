@@ -108,8 +108,7 @@ public class SevenWonderExtenstionService {
 
     private DataListener<IncreaseProductionDto> onIncreaseProduction() {
         return (client, data, ackSender) -> {
-            log.info("Increase production of {} by {} for {}", data.getResourceType().toString(),
-                    data.getProductionValue(), data.getMemberName());
+            log.info("Increase production of {} for {}", data.getResourceType().toString(), data.getMemberName());
             game.increaseProductionForMember(data);
             publishGameUpdate(client);
         };

@@ -40,7 +40,7 @@ public class Game {
                 .forEach(member -> member.getResources()
                         .stream()
                         .filter(resource -> data.getResourceType().equals(resource.getType()))
-                        .forEach(resource -> resource.increaseProduction(data.getProductionValue())));
+                        .forEach(Resource::increaseProduction));
     }
 
     private void generateResources() {

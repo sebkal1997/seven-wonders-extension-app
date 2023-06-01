@@ -13,7 +13,5 @@ public class IncreaseProductionDto {
 
     private String memberName;
 
-    private int productionValue;
-
     private ResourceType resourceType;
 }

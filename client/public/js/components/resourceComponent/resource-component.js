@@ -3,8 +3,6 @@ import stylesheet from "!!css-loader!./resource-component.css";
 
 export class ResourceComponent extends HTMLElement {
 
-    oldProductionValue = 0;
-
     constructor() {
         super();
 		this.attachShadow({mode: "open"});
@@ -26,21 +24,24 @@ export class ResourceComponent extends HTMLElement {
         const resourceTypeField = this.shadowRoot.querySelector('#resourceType');
         const resourceAmountField = this.shadowRoot.querySelector('#resourceAmount');
         const resourceProductionField = this.shadowRoot.querySelector('#resourceProduction');
+        const increaseResourceButton = this.shadowRoot.querySelector('#increaseResourceButton');
+        const transferResourceButton = this.shadowRoot.querySelector('#transferResourceButton');
+
         resourceTypeField.innerHTML = resourceType;
         resourceAmountField.value = resourceAmount;
         resourceProductionField.value = resourceProduction;
 
-        // resourceProductionField.addEventListener('change', increaseProductionValue, true);
+        increaseResourceButton.addEventListener('click', this.increaseProduction, true);
+        transferResourceButton.addEventListener('click', this.transferResources, true);
     }
 
-    // increaseProductionValue(event, game) {
-    //     const targetValue = event.target.value;
-    //     if (targetValue > oldProductionValue) {
-    //         let increaseProduction = new IncreaseProduction(game.members[currentMemberId-1].name, targetValue - oldProductionValue, this.resourceType);
-    //         socket.emit("increaseProduction", increaseProduction);
-    //         oldProductionValue = targetValue;
-    //     } else {
-    //         console.log("Value need to be incremented.");
-    //     }
-    // }
+    increaseProduction(event) {
+        const increaseResourceEvent = new CustomEvent("increaseResource", event);
+        this.dispatchEvent(increaseResourceEvent);
+    }
+
+    transferResources(event) {
+        const transferResourcesEvent = new CustomEvent("transferResources", event);
+        this.dispatchEvent(transferResourcesEvent);
+    }
 }
