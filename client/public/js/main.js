@@ -183,26 +183,31 @@ function reloadGame() {
             woodResourceComponent.attributes.resourceType.value = resource.type;
             woodResourceComponent.attributes.resourceAmount.value = resource.amount;
             woodResourceComponent.attributes.resourceProduction.value = resource.productionValue;
+            woodResourceComponent.reload();
             break;
           case 'STONE':
             stoneResourceComponent.attributes.resourceType.value = resource.type;
             stoneResourceComponent.attributes.resourceAmount.value = resource.amount;
             stoneResourceComponent.attributes.resourceProduction.value = resource.productionValue;
+            stoneResourceComponent.reload();
             break;
           case 'IRON':
             ironResourceComponent.attributes.resourceType.value = resource.type;
             ironResourceComponent.attributes.resourceAmount.value = resource.amount;
             ironResourceComponent.attributes.resourceProduction.value = resource.productionValue;
+            ironResourceComponent.reload();
             break;
           case 'GLASS':
             glassResourceComponent.attributes.resourceType.value = resource.type;
             glassResourceComponent.attributes.resourceAmount.value = resource.amount;
             glassResourceComponent.attributes.resourceProduction.value = resource.productionValue;
+            glassResourceComponent.reload();
             break;
           case 'MATERIAL':
             materialResourceComponent.attributes.resourceType.value = resource.type;
             materialResourceComponent.attributes.resourceAmount.value = resource.amount;
             materialResourceComponent.attributes.resourceProduction.value = resource.productionValue;
+            materialResourceComponent.reload();
             break;
           default:
             console.log("Resource " + resource.type + " is not handled yet.");

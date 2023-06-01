@@ -23,7 +23,7 @@ public class SevenWonderExtenstionService {
 
     private final SocketIOServer socketServer;
 
-    private final Game game = new Game();
+    private Game game = new Game();
 
     SevenWonderExtenstionService(SocketIOServer socketServer) {
         this.socketServer = socketServer;
@@ -51,6 +51,7 @@ public class SevenWonderExtenstionService {
         return (client) -> {
             final String roomName = clientRoom.remove(client.getSessionId().toString());
             client.leaveRoom(roomName);
+            game = new Game();
             log.info("Client ID[{}] - Disconnected from socket", client.getSessionId().toString());
         };
     }

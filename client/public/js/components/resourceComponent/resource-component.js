@@ -44,4 +44,18 @@ export class ResourceComponent extends HTMLElement {
         const transferResourcesEvent = new CustomEvent("transferResources", event);
         this.dispatchEvent(transferResourcesEvent);
     }
+
+    reload() {
+        let resourceType = this.attributes.resourceType.value
+        let resourceAmount = this.attributes.resourceAmount.value
+        let resourceProduction = this.attributes.resourceProduction.value
+
+        const resourceTypeField = this.shadowRoot.querySelector('#resourceType');
+        const resourceAmountField = this.shadowRoot.querySelector('#resourceAmount');
+        const resourceProductionField = this.shadowRoot.querySelector('#resourceProduction');
+
+        resourceTypeField.innerHTML = resourceType;
+        resourceAmountField.value = resourceAmount;
+        resourceProductionField.value = resourceProduction;
+    }
 }
