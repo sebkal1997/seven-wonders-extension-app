@@ -3,6 +3,7 @@ import { TransferResources } from "./model/transfer-resources.js";
 import { IncreaseProduction } from "./model/increase-production.js";
 import css from "../css/main.css"
 import { Resource } from "./model/resource.js";
+import { ResourceComponent } from "./components/resourceComponent/resource-component.js";
 
 'use strict';
 
@@ -16,43 +17,24 @@ const gamePage = document.querySelector('#game-page');
 const gameForm = document.querySelector('#gameForm');
 const currentMemberName = document.querySelector('#currentMemberName');
 const nextMemberButton = document.querySelector('#nextMemberButton');
-const woodType = document.querySelector("#woodType");
-const woodAmount = document.querySelector("#woodAmount");
-const woodProduction = document.querySelector("#woodProduction");
-const stoneType = document.querySelector("#stoneType");
-const stoneAmount = document.querySelector("#stoneAmount");
-const stoneProduction = document.querySelector("#stoneProduction");
-const ironType = document.querySelector("#ironType");
-const ironAmount = document.querySelector("#ironAmount");
-const ironProduction = document.querySelector("#ironProduction");
-const glassType = document.querySelector("#glassType");
-const glassAmount = document.querySelector("#glassAmount");
-const glassProduction = document.querySelector("#glassProduction");
-const materialType = document.querySelector("#materialType");
-const materialAmount = document.querySelector("#materialAmount");
-const materialProduction = document.querySelector("#materialProduction");
 const transferResourcesDialog = document.querySelector("#transferResourcesDialog");
-const transferResourcesDialogContent = document.querySelector("#transferResourcesDialogContent");
-const transferWoodButton = document.querySelector("#transferWoodButton");
-const transferStoneButton = document.querySelector("#transferStoneButton");
-const transferIronButton = document.querySelector("#transferIronButton");
-const transferGlassButton = document.querySelector("#transferGlassButton");
-const transferMaterialButton = document.querySelector("#transferMaterialButton");
 const title = document.querySelector("#title");
 const fromMember = document.querySelector("#fromMember");
 const toMember = document.querySelector("#toMember");
 const amount = document.querySelector("#amount");
+const resourceForm = document.querySelector(".form-resource");
+
+let woodResourceComponent = null;
+let stoneResourceComponent = null;
+let ironResourceComponent = null;
+let glassResourceComponent = null;
+let materialResourceComponent = null;
 
 let roomName = null;
 let socket = null;
 let currentMemberId = 1;
 let memberSize = 0;
 let game = null;
-let oldWoodProduction = 0;
-let oldStoneProduction = 0;
-let oldIronProduction = 0;
-let oldGlassProduction = 0;
-let oldMaterialProduction = 0;
 let resourceTypeToTransfer = null;
 
 function connect(event) {
@@ -74,6 +56,7 @@ function connect(event) {
             onGameUpdate(data);
         });
         socket.on('gameOver', () => {
+            game = null;
             finishGame();
         });
         socket.on('disconnect', function () {
@@ -104,6 +87,75 @@ function addMember(event) {
 function startGame(event) {
     memberPage.classList.add('hidden');
     gamePage.classList.remove('hidden');
+
+    const woodComponent = `
+    <resource-component id="woodResourceComponent" resourceType="WOOD" resourceAmount="0" resourceProduction="0">
+    </resource-component>
+    `;
+    const stoneComponent = `
+    <resource-component id="stoneResourceComponent" resourceType="STONE" resourceAmount="0" resourceProduction="0">
+    </resource-component>
+    `;
+    const ironComponent = `
+    <resource-component id="ironResourceComponent" resourceType="IRON" resourceAmount="0" resourceProduction="0">
+    </resource-component>
+    `;
+    const glassComponent = `
+    <resource-component id="glassResourceComponent" resourceType="GLASS" resourceAmount="0" resourceProduction="0">
+    </resource-component>
+    `;
+    const materialComponent = `
+    <resource-component id="materialResourceComponent" resourceType="MATERIAL" resourceAmount="0" resourceProduction="0">
+    </resource-component>
+    `;
+    resourceForm.innerHTML += woodComponent;
+    resourceForm.innerHTML += stoneComponent;
+    resourceForm.innerHTML += ironComponent;
+    resourceForm.innerHTML += glassComponent;
+    resourceForm.innerHTML += materialComponent;
+
+    woodResourceComponent = document.querySelector("#woodResourceComponent");
+    stoneResourceComponent = document.querySelector("#stoneResourceComponent");
+    ironResourceComponent = document.querySelector("#ironResourceComponent");
+    glassResourceComponent = document.querySelector("#glassResourceComponent");
+    materialResourceComponent = document.querySelector("#materialResourceComponent");
+
+    woodResourceComponent.addEventListener('increaseResource', () => {
+        increaseResourceProduction("WOOD") 
+    }, true);
+    woodResourceComponent.addEventListener('transferResources', () => {
+        createDialog("WOOD");
+        transferResourcesDialog.showModal()
+    }, true);
+    stoneResourceComponent.addEventListener('increaseResource',  () => {
+        increaseResourceProduction("STONE")
+    }, true);
+    stoneResourceComponent.addEventListener('transferResources', () => {
+        createDialog("STONE");
+        transferResourcesDialog.showModal()
+    }, true);
+    ironResourceComponent.addEventListener('increaseResource',  () => {
+        increaseResourceProduction("IRON")
+    }, true);
+    ironResourceComponent.addEventListener('transferResources', () => {
+        createDialog("IRON");
+        transferResourcesDialog.showModal()
+    }, true);
+    glassResourceComponent.addEventListener('increaseResource',  () => {
+        increaseResourceProduction("GLASS")
+    }, true);
+    glassResourceComponent.addEventListener('transferResources', () => {
+        createDialog("GLASS");
+        transferResourcesDialog.showModal()
+    }, true);
+    materialResourceComponent.addEventListener('increaseResource',  () => {
+        increaseResourceProduction("MATERIAL")
+    }, true);
+    materialResourceComponent.addEventListener('transferResources', () => {
+        createDialog("MATERIAL");
+        transferResourcesDialog.showModal()
+    }, true);
+
     event.preventDefault();
 }
 
@@ -128,94 +180,45 @@ function reloadGame() {
     for (let resource of game.members[memberIndex].resources) {
         switch (resource.type) {
           case 'WOOD':
-            woodType.innerHTML = resource.type;
-            woodAmount.value = resource.amount;
-            woodProduction.value = resource.productionValue;
+            woodResourceComponent.attributes.resourceType.value = resource.type;
+            woodResourceComponent.attributes.resourceAmount.value = resource.amount;
+            woodResourceComponent.attributes.resourceProduction.value = resource.productionValue;
+            woodResourceComponent.reload();
             break;
           case 'STONE':
-            stoneType.innerHTML = resource.type;
-            stoneAmount.value = resource.amount;
-            stoneProduction.value = resource.productionValue;
+            stoneResourceComponent.attributes.resourceType.value = resource.type;
+            stoneResourceComponent.attributes.resourceAmount.value = resource.amount;
+            stoneResourceComponent.attributes.resourceProduction.value = resource.productionValue;
+            stoneResourceComponent.reload();
             break;
           case 'IRON':
-            ironType.innerHTML = resource.type;
-            ironAmount.value = resource.amount;
-            ironProduction.value = resource.productionValue;
+            ironResourceComponent.attributes.resourceType.value = resource.type;
+            ironResourceComponent.attributes.resourceAmount.value = resource.amount;
+            ironResourceComponent.attributes.resourceProduction.value = resource.productionValue;
+            ironResourceComponent.reload();
             break;
           case 'GLASS':
-            glassType.innerHTML = resource.type;
-            glassAmount.value = resource.amount;
-            glassProduction.value = resource.productionValue;
+            glassResourceComponent.attributes.resourceType.value = resource.type;
+            glassResourceComponent.attributes.resourceAmount.value = resource.amount;
+            glassResourceComponent.attributes.resourceProduction.value = resource.productionValue;
+            glassResourceComponent.reload();
             break;
           case 'MATERIAL':
-            materialType.innerHTML = resource.type;
-            materialAmount.value = resource.amount;
-            materialProduction.value = resource.productionValue;
+            materialResourceComponent.attributes.resourceType.value = resource.type;
+            materialResourceComponent.attributes.resourceAmount.value = resource.amount;
+            materialResourceComponent.attributes.resourceProduction.value = resource.productionValue;
+            materialResourceComponent.reload();
             break;
           default:
             console.log("Resource " + resource.type + " is not handled yet.");
         }
     }
-    oldWoodProduction = woodProduction.value;
-    oldStoneProduction = stoneProduction.value;
-    oldIronProduction = ironProduction.value;
-    oldGlassProduction = glassProduction.value;
-    oldMaterialProduction = materialProduction.value;
 }
 
-function increaseWoodProduction(event) {
-    const targetValue = event.target.value;
-    if (targetValue > oldWoodProduction) {
-        let increaseProduction = new IncreaseProduction(game.members[currentMemberId-1].name, targetValue - oldWoodProduction, "WOOD");
-        socket.emit("increaseProduction", increaseProduction);
-        oldWoodProduction = targetValue;
-    } else {
-        console.log("Value need to be incremented.");
-    }
-}
+function increaseResourceProduction(resourceType) {
+    let increaseProduction = new IncreaseProduction(game.members[currentMemberId-1].name, resourceType);
+    socket.emit("increaseProduction", increaseProduction);
 
-function increaseStoneProduction(event) {
-    const targetValue = event.target.value;
-    if (targetValue > oldStoneProduction) {
-        let increaseProduction = new IncreaseProduction(game.members[currentMemberId-1].name, targetValue - oldStoneProduction, "STONE");
-        socket.emit("increaseProduction", increaseProduction);
-        oldStoneProduction = targetValue;
-    } else {
-        console.log("Value need to be incremented.");
-    }
-}
-
-function increaseIronProduction(event) {
-    const targetValue = event.target.value;
-    if (targetValue > oldIronProduction) {
-        let increaseProduction = new IncreaseProduction(game.members[currentMemberId-1].name, targetValue - oldIronProduction, "IRON");
-        socket.emit("increaseProduction", increaseProduction);
-        oldIronProduction = targetValue;
-    } else {
-        console.log("Value need to be incremented.");
-    }
-}
-
-function increaseGlassProduction(event) {
-    const targetValue = event.target.value;
-    if (targetValue > oldGlassProduction) {
-        let increaseProduction = new IncreaseProduction(game.members[currentMemberId-1].name, targetValue - oldGlassProduction, "GLASS");
-        socket.emit("increaseProduction", increaseProduction);
-        oldGlassProduction = targetValue;
-    } else {
-        console.log("Value need to be incremented.");
-    }
-}
-
-function increaseMaterialProduction(event) {
-    const targetValue = event.target.value;
-    if (targetValue > oldMaterialProduction) {
-        let increaseProduction = new IncreaseProduction(game.members[currentMemberId-1].name, targetValue - oldMaterialProduction, "MATERIAL");
-        socket.emit("increaseProduction", increaseProduction);
-        oldMaterialProduction = targetValue;
-    } else {
-        console.log("Value need to be incremented.");
-    }
 }
 
 function createDialog(resourceType) {
@@ -255,39 +258,17 @@ function onGameUpdate(data) {
     game = new Game(data.members, data.round, data.stage);
     let roundAndStage = document.querySelector("#roundAndStage");
     roundAndStage.innerHTML = "Round: " + game.round + " Stage: " + game.stage;
-    reloadGame();
+    if (!gamePage.classList.contains('hidden')) {
+        reloadGame();
+    }
 
     console.log("Game updated.")
 }
 
+customElements.define("resource-component", ResourceComponent);
 roomForm.addEventListener('submit', connect, true);
 addMemberButton.addEventListener('click', addMember, true);
 memberForm.addEventListener('submit', startGame, true);
 gameForm.addEventListener('submit', finishGame, true);
 nextMemberButton.addEventListener('click', nextMember, true);
-woodProduction.addEventListener('change', increaseWoodProduction, true);
-stoneProduction.addEventListener('change', increaseStoneProduction, true);
-ironProduction.addEventListener('change', increaseIronProduction, true);
-glassProduction.addEventListener('change', increaseGlassProduction, true);
-materialProduction.addEventListener('change', increaseMaterialProduction, true);
-transferWoodButton.addEventListener('click', () => {
-    createDialog("WOOD");
-    transferResourcesDialog.showModal()
-}, true);
-transferStoneButton.addEventListener('click', () => {
-    createDialog("STONE");
-    transferResourcesDialog.showModal()
-}, true);
-transferIronButton.addEventListener('click', () => {
-    createDialog("IRON");
-    transferResourcesDialog.showModal()
-}, true);
-transferGlassButton.addEventListener('click', () => {
-    createDialog("GLASS");
-    transferResourcesDialog.showModal()
-}, true);
-transferMaterialButton.addEventListener('click', () => {
-    createDialog("MATERIAL");
-    transferResourcesDialog.showModal()
-}, true);
 dialogForm.addEventListener('submit', transfer, true);

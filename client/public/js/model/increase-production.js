@@ -1,7 +1,6 @@
 export class IncreaseProduction {
-    constructor(memberName, productionValue, resourceType) {
+    constructor(memberName, resourceType) {
         this.memberName = memberName;
-        this.productionValue = productionValue;
         this.resourceType = resourceType;
     }
 }
