@@ -201,6 +201,13 @@ button.accent {
     width: 100%;
 }
 
+/* #toMember {
+    width: 100%;    
+    min-height: 38px;
+    font-size: 15px;
+    border: 1px round #c8c8c8;
+
+} */
 
 @media screen and (max-width: 730px) {
 

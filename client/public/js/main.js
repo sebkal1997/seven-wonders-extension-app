@@ -156,6 +156,7 @@ function startGame(event) {
         transferResourcesDialog.showModal()
     }, true);
 
+    reloadGame();
     event.preventDefault();
 }
 
@@ -226,6 +227,10 @@ function createDialog(resourceType) {
     resourceTypeToTransfer = resourceType;
     title.innerHTML = "Transfer " + resourceType;
     fromMember.value = fromName;
+    var i, L = toMember.options.length - 1;
+    for(i = L; i >= 0; i--) {
+        toMember.remove(i);
+    }
     game.members.map( (member) => {
         if (member.name != fromName) {
             let opt = document.createElement("option");

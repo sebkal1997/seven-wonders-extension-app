@@ -32,7 +32,6 @@ public class SevenWonderExtenstionService {
 
         this.socketServer.addEventListener("addMember", String.class, onAddMember());
         this.socketServer.addEventListener("removeMember", String.class, onRemoveMember());
-        this.socketServer.addEventListener("addResource", CreateResourceDto.class, onAddResource());
         this.socketServer.addEventListener("transferResources", TransferResourcesDto.class, onTransferResource());
         this.socketServer.addEventListener("nextRound", Void.class, onNextRound());
         this.socketServer.addEventListener("increaseProduction", IncreaseProductionDto.class, onIncreaseProduction());
@@ -68,20 +67,6 @@ public class SevenWonderExtenstionService {
         return (client, data, ackSender) -> {
             log.info("Added new member to the game called {}", data);
             game.getMembers().removeIf(member -> data.equals(member.getName()));
-            publishGameUpdate(client);
-        };
-    }
-
-    private DataListener<CreateResourceDto> onAddResource() {
-        return (client, data, ackSender) -> {
-            log.info("Added new member to the game called {}", data);
-            game.getMembers()
-                    .stream()
-                    .filter(member -> data.getMemberName().equals(member.getName()))
-                    .forEach(member -> member.getResources()
-                            .stream()
-                            .filter(resource -> data.getResourceType().equals(resource.getType()))
-                            .forEach(resource -> resource.increaseAmount(data.getResourceAmount())));
             publishGameUpdate(client);
         };
     }
